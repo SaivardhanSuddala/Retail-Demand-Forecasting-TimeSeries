@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sales Forecast</title>
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    /* ── Page Title ── */
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a202c;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      color: #718096;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 36px 40px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #a0aec0;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    /* ── Form Fields ── */
+    .field {
+      margin-bottom: 20px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #4a5568;
+      margin-bottom: 7px;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 11px 14px;
+      font-size: 15px;
+      color: #2d3748;
+      background: #f7fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 9px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      font-family: inherit;
+    }
+
+    .field input:focus {
+      border-color: #4299e1;
+      box-shadow: 0 0 0 3px rgba(66,153,225,0.15);
+      background: #fff;
+    }
+
+    /* ── Button ── */
+    .btn {
+      width: 100%;
+      padding: 13px;
+      margin-top: 8px;
+      background: #4299e1;
+      color: white;
+      border: none;
+      border-radius: 9px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      font-family: inherit;
+    }
+
+    .btn:hover {
+      background: #3182ce;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    /* ── Result Box ── */
+    .result-box {
+      background: #f0fff4;
+      border: 1.5px solid #9ae6b4;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .result-box .result-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #38a169;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .result-box .result-number {
+      font-size: 52px;
+      font-weight: 700;
+      color: #276749;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .result-box .result-unit {
+      font-size: 13px;
+      color: #68d391;
+      margin-bottom: 16px;
+    }
+
+    .result-box .meta {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .result-box .meta span {
+      background: white;
+      border: 1px solid #c6f6d5;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      color: #2f855a;
+    }
+
+    /* ── Error Box ── */
+    .error-box {
+      background: #fff5f5;
+      border: 1.5px solid #fed7d7;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .error-box .error-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .error-box .error-text {
+      font-size: 14px;
+      color: #c53030;
+      line-height: 1.5;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      border-top: 1.5px solid #e2e8f0;
+      margin: 24px 0;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      margin-top: 24px;
+      font-size: 12px;
+      color: #a0aec0;
+      text-align: center;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 520px) {
+      .card { padding: 28px 22px; }
+      .result-box .result-number { font-size: 40px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1 class="page-title">📦 Sales Forecaster</h1>
+  <p class="page-subtitle">Enter store & item details to predict demand</p>
+
+  <div class="card">
+
+    <!-- ── Result (shown after prediction) ── -->
+    {% if prediction %}
+    <div class="result-box">
+      <div class="result-label">✔ Forecast Result</div>
+      <div class="result-number">{{ prediction }}</div>
+      <div class="result-unit">Predicted Units</div>
+      <div class="meta">
+        <span>🏪 Store {{ store }}</span>
+        <span>📦 Item {{ item }}</span>
+        <span>📅 {{ date }}</span>
+      </div>
+    </div>
+    <hr class="divider">
+    {% endif %}
+
+    <!-- ── Error ── -->
+    {% if error %}
+    <div class="error-box">
+      <div class="error-icon">⚠️</div>
+      <div class="error-text">{{ error }}</div>
+    </div>
+    <hr class="divider">
+    {% endif %}
+
+    <!-- ── Form ── -->
+    <div class="card-title">New Forecast</div>
+
+    <form method="POST" action="/predict">
+      {% csrf_token %}
+
+      <div class="field">
+        <label for="store">Store ID</label>
+        <input type="number" id="store" name="store"
+               min="1" max="10" placeholder="Enter store (1 - 10)"
+               value="{% if store %}{{ store }}{% endif %}" required>
+      </div>
+
+      <div class="field">
+        <label for="item">Item ID</label>
+        <input type="number" id="item" name="item"
+               min="1" max="50" placeholder="Enter item (1 - 50)"
+               value="{% if item %}{{ item }}{% endif %}" required>
+      </div>
+
+      <div class="field">
+        <label for="date">Forecast Date</label>
+        <input type="date" id="date" name="date"
+               value="{% if date %}{{ date }}{% endif %}" required>
+      </div>
+
+      <button class="btn" type="submit">Predict Sales →</button>
+    </form>
+
+  </div>
+
+  <p class="footer">Powered by Random Forest Model &nbsp;·&nbsp; Auto lag & rolling features</p>
+
+</body>
+</html>

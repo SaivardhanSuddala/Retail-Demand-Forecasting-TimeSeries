@@ -57,8 +57,6 @@
       text-transform: uppercase;
       margin-bottom: 24px;
     }
-
-    /* ── Form Fields ── */
     .field {
       margin-bottom: 20px;
     }
@@ -90,7 +88,7 @@
       background: #fff;
     }
 
-    /* ── Button ── */
+  
     .btn {
       width: 100%;
       padding: 13px;
@@ -114,7 +112,6 @@
       transform: scale(0.98);
     }
 
-    /* ── Result Box ── */
     .result-box {
       background: #f0fff4;
       border: 1.5px solid #9ae6b4;
@@ -163,7 +160,6 @@
       color: #2f855a;
     }
 
-    /* ── Error Box ── */
     .error-box {
       background: #fff5f5;
       border: 1.5px solid #fed7d7;
@@ -185,15 +181,12 @@
       color: #c53030;
       line-height: 1.5;
     }
-
-    /* ── Divider ── */
     .divider {
       border: none;
       border-top: 1.5px solid #e2e8f0;
       margin: 24px 0;
     }
 
-    /* ── Footer ── */
     .footer {
       margin-top: 24px;
       font-size: 12px;
@@ -201,7 +194,6 @@
       text-align: center;
     }
 
-    /* ── Responsive ── */
     @media (max-width: 520px) {
       .card { padding: 28px 22px; }
       .result-box .result-number { font-size: 40px; }
@@ -216,7 +208,6 @@
 
   <div class="card">
 
-    <!-- ── Result (shown after prediction) ── -->
     {% if prediction %}
     <div class="result-box">
       <div class="result-label">✔ Forecast Result</div>
@@ -231,7 +222,6 @@
     <hr class="divider">
     {% endif %}
 
-    <!-- ── Error ── -->
     {% if error %}
     <div class="error-box">
       <div class="error-icon">⚠️</div>
@@ -240,7 +230,7 @@
     <hr class="divider">
     {% endif %}
 
-    <!-- ── Form ── -->
+    
     <div class="card-title">New Forecast</div>
 
     <form method="POST" action="/predict">
